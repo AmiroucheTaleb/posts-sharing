@@ -1,17 +1,15 @@
-require('dotenv').config();
-const mongoose = require("mongoose");
-
+import * as env from "dotenv";
+import mongoose from "mongoose";
+env.config();
 const connect = async () => {
-    try {
-        const response = await mongoose.connect(process.env.URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useFindAndModify: false,
-            useCreateIndex: true
-        });
-    } catch (err) {
-        console.log(err);
-    }
-}
+  try {
+    const response = mongoose.connect(process.env.URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-module.exports = connect;
+export default connect;

@@ -1,8 +1,13 @@
-const app = require("express");
+import app from "express";
 const router = app.Router();
-const {register, registerValidations, login, loginValidations} = require("../controllers/userController");
+import {
+  register,
+  registerValidations,
+  login,
+  loginValidations,
+} from "../controllers/userController.js";
 
 router.post("/register", registerValidations, register);
 router.post("/login", loginValidations, login);
 
-module.exports = router;
+export default router;

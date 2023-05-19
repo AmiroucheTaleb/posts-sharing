@@ -1,26 +1,27 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const connect = require('./config/db');
-const path = require('path');
-const router = require('./routes/userRoutes');
-const postRoutes = require('./routes/postRoutes');
-const profileRoutes = require('./routes/profileRoutes');
-require('dotenv').config();
+import express from "express";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import dbConnect from "./config/db.js";
+import path from "path";
+import router from "./routes/userRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
+import * as env from "dotenv";
+import cors from "cors";
+env.config();
 const app = express();
 
 // connect mongodb database
-connect();
+dbConnect();
+app.use(cors());
 app.use(bodyParser.json());
-app.use('/', router);
-app.use('/', postRoutes);
-app.use('/', profileRoutes);
+app.use("/", router);
+app.use("/postes", postRoutes);
+app.use("/profile", profileRoutes);
 const PORT = process.env.PORT || 5000;
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/client/build/')));
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-    });
-}
-app.listen(PORT, () => {
-    console.log('Your app is running');
+
+mongoose.connection.once("open", () => {
+  app.listen(PORT, () => {
+    console.log("Your app is running");
+  });
 });
